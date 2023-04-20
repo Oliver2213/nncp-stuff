@@ -22,5 +22,30 @@ NNCP is perfect for bulk offline downloading / uploading of content to and from 
 
 In general, a lot of these follow similar patterns:
 * Search for content and return results. Depending on user's situation, they might want this to go further - don't just return a list of results, download the top n. Or download everything. Or download everything that matches a set of filters.
-* Let users keep a file of ongoing subscriptions. These could be search terms that a user always wants to download or be informed of new results for, playlists / updating collections, etc. They can of course update this file. Adding a new URL, search term / set of filters should be enough to start collecting results or media for that subscription - as soon as a node handling these requests gets the packet.
+* Let users keep a file of ongoing subscriptions. These could be search terms that a user always wants to download or be informed of new results for, playlists / updating collections, etc. They can of course update this file. Adding a new URL, search term / set of filters should be enough to start collecting results or media for that subscription - as soon as a node handling these requests gets the packet. Periodically, a node running this would go through all its known users, and recheck each one of their subscriptions. It would download any new ones - according to the user's filters and settings in their subsscription file, queueing the new content into nncp for the user.
 
+
+## Users...
+Ok. Users for nncp are... Not well defined... Or are they. Devices are (almost) there. You just have to know which are yours and which belong to your friends. (But do you really have friends using this yet?)  
+How feasible is it to share a "node" among all your machines, aside from just setting them all to the same keys? It seems like this would break some of the uses of this - if 'john' sends an ack for that 5 gb file from laptop 'John' back to server 'John'... All well and good. But if phone 'John' syncs after this, it won't get the file; it's already been acknowledged.  (And how does fictional John send files anyways? TO himself I guess, since everything has keys.)
+This whole discussion might be moot: areas. What if you made a 'user area'. Then give that area to your friends; give the private keys of the area to all your nodes. You still have distinct peers you can send to, but have a consistent identity for everyone else.  
+Something to test.
+
+### User management
+As stated above, adding nodes is a process. Either manually edit the config file, or get an h-json tool to add a new section in neigh... And do that every time you add a node. Granted that is probably not often, but this could still be easier.  
+Idea: the proposed command to add neighbor nodes above. Ideally through some sort of compact URL. Now you could add an exec section for your own nodes that makes this command available offline. Essentially, this brings adding new nodes to your "set" into nncp.
+```
+# $friendlink is your friend's nncp link, with their keys and maybe an address.
+# (doesn't matter if this is an area or a node I think)
+nncp-addneigh --update-all-nodes bob $friendlink
+
+Adding neighbor 'bob' with keys ......
+```
+That command would:
+* parse the link, extracting the public keys
+* add a new section labeled bob in your neighbors configuration with those keys and any provided addresses.
+* With the --update-all-nodes option, create packets for all our known neighbors (excluding bob). These should be exec packets, that just run 
+```
+nncp-addneigh bob bobs-link
+```
+Replicating bob as a neighbor across all your nodes. This is a bit rough - you might not be allowed the addneigh command on all your neighbors, and having the update part of the command itself also feels clunky. But the idea is that you can introduce a new neighbor to your local nncp config with one command, and automate that among all your nodes if you want.
