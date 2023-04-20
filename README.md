@@ -1,6 +1,6 @@
 # NNCP stuff
 This is a collection of scripts and writings about [NNCP, node to node copy](https://nncp.mirrors.quux.org/).
-It's a very flexible project, and I need a place to begin collecting ideas of usage, scripts, examples, links, etc.
+It's a very flexible project, and I need a place to begin collecting [ideas](ideas.md) of usage, scripts, examples, links, etc.
 
 ## Resources
 * [Source code](https://git.cypherpunks.ru/nncp.git) 
