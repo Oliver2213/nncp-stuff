@@ -1,4 +1,6 @@
 #!/bin/bash
+# Script from: https://www.complete.org/dead-usb-drives-are-fine-building-a-reliable-sneakernet/
+# Adapted to my paths and local nodes.
 
 set -eo pipefail
 
