@@ -8,8 +8,9 @@ It's a very flexible project, and I need a place to begin collecting ideas of us
 
 ## contains
 ### nncp-sync
-Essentially, load everything in the local node's outbound queue onto every USB drive that has an nncp directory, and read packets from that drive for this machine.  
-This script needs to be on every machine you want to use to sync - the machine needs to be known by others and have an nncp config.
+Scans mounted USB drives, running this manual, sneaker net sync process for each. The idea is that you plug a drive in, run ncp-sync, and any queued files, file requests, commands, etc get read from and written. This will *receive* any packets other machines wrote to the drive intended for this machine (or which it will rout), then *send* anything queued for other nodes by writing those encrypted packets to the disk. Repeat, bouncing among configured machines - interact with any of them asynchronously via the flash drive, running the script on each machine to process updates.  
+You can still connect them real-time with nncp-daemon, nncp-caller, nncp-call.  
+
 How this works, excerpted from [this script's source](https://www.complete.org/dead-usb-drives-are-fine-building-a-reliable-sneakernet/):
 
 >Here are the basic steps to processing this stuff with NNCP:
