@@ -8,7 +8,8 @@ Also a command to actually add those keys - validate them and add them to a bloc
 nncp-addneigh bob nncpnode://encoded-keys...
 nncp-rmneigh bob
 ```
-Maybe the fictional nncpnode scheme could have an addr arg, for specifying one or more addresses. Then, though ugly, we have a fully web-ready and standard format for sharing nodes aong friends.
+Maybe the fictional nncpnode scheme could have an addr arg, for specifying one or more addresses. Then, though ugly, we have a fully web-ready and standard format for sharing nodes among friends.  
+The directory config format sort of solves this neighbor adding problem... Except now your config is a directory, and you still need to write something to add nodes to it. Still, maybe it could be an intermediate step? A bash function to write a new node to a config directory. Then just convert back to hjson when done.
 
 ## content and tooling
 NNCP is perfect for bulk offline downloading / uploading of content to and from places. NNCP works via unix philosophy, but still needs a bit more work on tooling to 
@@ -24,6 +25,7 @@ In general, a lot of these follow similar patterns:
 * Search for content and return results. Depending on user's situation, they might want this to go further - don't just return a list of results, download the top n. Or download everything. Or download everything that matches a set of filters.
 * Let users keep a file of ongoing subscriptions. These could be search terms that a user always wants to download or be informed of new results for, playlists / updating collections, etc. They can of course update this file. Adding a new URL, search term / set of filters should be enough to start collecting results or media for that subscription - as soon as a node handling these requests gets the packet. Periodically, a node running this would go through all its known users, and recheck each one of their subscriptions. It would download any new ones - according to the user's filters and settings in their subsscription file, queueing the new content into nncp for the user.
 
+Each of these services also needs a standard way to report its help documentation, so people know how to use them. Or maybe they could ship back little wrapper scripts. You send an exec command, and then several files are sent to your node's bin directory. They would map to wget, youtube-dlp, curl, etc commands - using the wget script simply queues that execution. It would probably also need --help, for explaining the differences, what wget options don't work, etc.  
 
 ## Users...
 Ok. Users for nncp are... Not well defined... Or are they. Devices are (almost) there. You just have to know which are yours and which belong to your friends. (But do you really have friends using this yet?)  
@@ -49,3 +51,9 @@ That command would:
 nncp-addneigh bob bobs-link
 ```
 Replicating bob as a neighbor across all your nodes. This is a bit rough - you might not be allowed the addneigh command on all your neighbors, and having the update part of the command itself also feels clunky. But the idea is that you can introduce a new neighbor to your local nncp config with one command, and automate that among all your nodes if you want.
+
+## Ideas for utilities over nncp
+As utility scripts available asynchronously over nncp, it seems useful to have:
+* a script which, when run on an internet-connected machine, will retrieve either the latest nncp, or a specific version, check it's signature, then send the tarball to the node asking.
+* As already mentioned, some nncp script or command to add a neighbor node to the local one, and also remove by node ID.
+* 

@@ -5,6 +5,7 @@ It's a very flexible project, and I need a place to begin collecting [ideas](ide
 ## Resources
 * [Source code](https://git.cypherpunks.ru/nncp.git) 
 * [Website](http://www.nncpgo.org/)
+* [nncp-tools](https://github.com/jgoerzen/nncp-tools)
 
 ## contains
 ### nncp-sync
